@@ -72,19 +72,18 @@ n_btoi: ; Convert from binary to int
         inc     rcx
         ;**End parsing, this effectively skips the indexes for '0b_'**
 
-n_btoi_count:
-        mov dl, [rdi+rcx]   ; Will start reading index after '0b_'
-        cmp dl, 0           ; Searching for end of string
+n_btoi_start:
+        mov     dl, [rdi+rcx]   ; get binary char
+        inc     rcx             ; get ready for next num
+        cmp     dl, 0           ; see if end of string
+        je      n_btoi_done
 
-        jz  n_btoi_convert  ; Once at end of string, start conversion
-                            ; This effectively starts conversion from
-                            ; Rightmost bit
-        inc rcx
-        jmp n_btoi_count
+        shl     rax, 1          ; mul by two if not end of string
 
-n_btoi_convert:
-        mov dl, [rdi+rcx]   ; At this point, rdi+rcs will be the
-                            ; LAST num in index
+        sub     dl, '0'         ; convert to num
+        add     rax, rdx        ; add to rax
+  
+        jmp     n_btoi_start
         
 n_btoi_done:
         ret
