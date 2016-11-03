@@ -1,2 +1,2 @@
 include/catch.hpp linguist-vendored
-makefile linguist-vendored
+./makefile linguist-vendored
