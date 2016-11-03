@@ -23,9 +23,8 @@ len_done:
 n_dtoi:
         
         ;********SETTING UP **********
-        xor     rax, rax    ; cheap 0 (Accumulator [to be returned]
+        xor     rax, rax    ; cheap 0 (Accumulator [to be returned])
         xor     rcx, rcx    ; cheap 0 again (Counter)
-        mov     rdx, 10     ; move into rdx to multiply by
 
 n_dtoi_top:
         mov     dl, [rdi+rcx]     ; take first char
@@ -39,13 +38,14 @@ n_dtoi_top:
 
         ; If null byte, done (If done
         ; correctly, the proper value will be in rax         
+        cmp     dl, 0
         je      n_dtoi_done  
 
         ; The following only needs to be done before
         ; the proc reaches end of string
-        sub     dl, '0'    ; subtract 0 (turn into num)
-        mul     rdx
-        add     rax, [dl]
+        sub     dl, '0'     ; subtract 0 (turn into num)
+        imul    rax, 10     ; multiply current val of rax by 10
+        add     rax, rdx    ; add current value of dl
         jmp     n_dtoi_top
 
 n_dtoi_done:
